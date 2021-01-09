@@ -9,7 +9,7 @@ let taskInput = document.querySelector('#new_task');
 //define event listeners
 form.addEventListener('submit', addTask);
 taskList.addEventListener('click', removeTask);
-clearBtn.addEventListener('click', clearAll);
+clearBtn.addEventListener('click', clearTask);
 filter.addEventListener('keyup', filterTask);
 
 document.addEventListener('DOMContentLoaded', getTasks)
@@ -22,9 +22,9 @@ document.addEventListener('DOMContentLoaded', getTasks)
 //define function
 //add task
 function addTask(e) {
-    e.preventDefault();
+
     if (taskInput.value === '') {
-        alert('Add a task please')
+        alert('Add a task please!')
     } else {
         //create li element
         let li = document.createElement('li');
@@ -35,7 +35,7 @@ function addTask(e) {
         link.setAttribute('href', '#');
         link.innerHTML = 'x';
         link.style.color = 'red';
-        li.appendChild(link)
+        li.appendChild(link);
         taskList.appendChild(li);
 
         storeTaskInLocalStorage(taskInput.value);
@@ -44,17 +44,18 @@ function addTask(e) {
         taskInput.value = '';
 
     }
-
+    e.preventDefault();
 
 }
 
 //remove task
 function removeTask(e) {
     if (e.target.hasAttribute("href")) {
-        if (confirm("Are you sure?")) {
+        if (confirm("Are you sure want to delete?")) {
             let ele = e.target.parentElement;
-            taskList.removeChild(ele)
+            // taskList.removeChild(ele)
             // ele.remove(); ////problem identified taskList.removeChild(li)
+            ele.remove();
             removeFromLS(ele)
         }
 
@@ -62,7 +63,7 @@ function removeTask(e) {
 }
 
 //remove or clear clearAll
-function clearAll(e) {
+function clearTask(e) {
     // taskList.innerHTML = "";
 
     while (taskList.firstChild) {
@@ -84,14 +85,14 @@ function filterTask(e) {
         }
     })
 
-}
+};
 
 //store in local storage
 
 function storeTaskInLocalStorage(task) {
     let tasks;
     if (localStorage.getItem('tasks') === null) {
-        task = [];
+        tasks = [];
     } else {
         tasks = JSON.parse(localStorage.getItem('tasks'));
     }
